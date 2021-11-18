@@ -15,6 +15,9 @@ const b=2;
 
 const c= a||b;
 const d= a&&b;
+//and condition is equal to if condition
+
+
 console.log(c);
 console.log(d);
 
@@ -41,7 +44,14 @@ const sum=arr.reduce((p,c)=>p+c,0);//shorter way to write
 console.log(sum)
 
 
+// const obj={
+//     a:1,
+//     b:2,
+//     c:3,
+// } 
 
+// // const d= 'd';
+// console.log(obj.[d]);
 
 
 
@@ -142,3 +152,33 @@ console.log(updatedUsers1);
 console.log(updatedUsers);
 
 
+//forin
+
+const obj={
+    a:1,
+    b:2,
+    c:3,
+};
+
+for (const key in obj) {
+    if (Object.hasOwnProperty.call(obj, key)) {
+        const element = obj[key];
+        console.log(key);
+        console.log(element);
+        console.log(obj);
+
+    }
+}
+
+//forof
+
+const arry={
+    a:1,
+    b:2,
+    c:3,
+};
+for (const [key,value] of Object.entries(arry)) {
+   console.log(key);
+   console.log(value);
+   console.log(arry);
+}
