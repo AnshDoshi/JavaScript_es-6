@@ -1,0 +1,4 @@
+what is iterator
+asyncronis and syncronic 
+promises
+what is yeild,why use generator
