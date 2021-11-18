@@ -1,3 +1,10 @@
+// PROMISES
+//race
+//all
+// Any
+// allsettled
+
+
 // setTimeout (()=>{
 //     console.log('a1');
 // },0)
