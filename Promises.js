@@ -1,46 +1,56 @@
-// PROMISES
-//race
-//all
-// Any
+// race
+// all
+// any
 // allsettled
 
+const p1 = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject('p1');
+    }, 50);
+  });
 
-// setTimeout (()=>{
-//     console.log('a1');
-// },0)
+const login = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('a');
+    }, 100);
+  });
 
-// console.log('s1');
-// console.log('s2');
-// console.log('s3');
+const users = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('b');
+    }, 200);
+  });
 
+const apiCalls = async () => {
+  try {
+    // console.time('noraml promise')
+    // const r1 = await login();
+    // console.log(r1);
+    // const r2 = await users(r1);
+    // console.timeEnd('noraml promise')
+    // console.log(r2);
+    console.time('promise all');
+    const result = await Promise.allSettled([p1(), login(), users()]);
+    console.log(result);
+    console.log(result.filter(x => x.status === 'fulfilled'));
+    console.timeEnd('promise all');
+  } catch (error) {
+    console.log(error);
+  } finally {
+    console.log('finally call always');
+  }
+};
 
-const p1=()=>{
-    return new Promise((resolve,reject)=>{
-        resolve('a');
-    })
-}
-const p2=()=>{
-    return new Promise((resolve,reject)=>{
-        resolve(`${data} b`);
-    })
-}
+apiCalls();
 
-// const apiCalls=async()={
-//     try{
-//     const r1=await p1();
-//     const r2=await p2(r1);
-//     console.log(r1);
-//     console.log(r2);
-//     }catch(error){
-//         console.log(error);
-
-//     }
-//     finally{
-//         console.log('finally call always');
-//     }
-
-// }
-
-
-//old javascript technic
-// p1().then((value=>p2(value).then((val)=>console.log(val)).catch((err)=>console.log(err))).catch((err)=>console.log('err',err));
+// old javascript technic
+// p1()
+//   .then((value) =>
+//     p2(value)
+//       .then((val) => console.log(val))
+//       .catch((err) => console.log(err))
+//   )
+//   .catch((err) => console.log("err", err));
