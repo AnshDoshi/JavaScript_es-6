@@ -1,0 +1,215 @@
+import React, { Component, createRef } from 'react';
+
+import { render } from 'react-dom';
+
+export default class App extends Component {
+  constructor(params) {
+    super(params);
+    this.state = {
+      todoList: [],
+      text: '',
+      filterType: 'all',
+      error: null,
+    };
+    this.intputRef = createRef();
+    // this.onChangeText = this.onChangeText.bind(this);
+  }
+
+  async componentDidMount() {
+    this.loadData('all');
+  }
+
+  loadData = async (filterType) => {
+    try {
+      let url = 'http://localhost:3000/todo-list';
+      if (filterType !== 'all') {
+        url = `${url}?isDone=${filterType === 'completed'}`;
+      }
+      console.log(url);
+      const res = await fetch(url);
+      const todoList = await res.json();
+      this.setState({
+        todoList,
+        filterType,
+      });
+    } catch (error) {
+      this.setState({
+        error,
+      });
+    }
+  };
+
+  onChangeText = (event) => {
+    this.setState({
+      text: event.target.value,
+    });
+  };
+
+  deleteTodo = async (item) => {
+    try {
+      await fetch(`http://localhost:3000/todo-list/${item.id}`, {
+        method: 'DELETE',
+      });
+
+      this.setState(({ todoList }) => {
+        const index = todoList.findIndex((x) => x.id === item.id);
+        return {
+          todoList: [...todoList.slice(0, index), ...todoList.slice(index + 1)],
+        };
+      });
+    } catch (error) {}
+  };
+
+  todoFilter = () => {
+    console.log('TodoFilter');
+  };
+
+  addTodo = async (event) => {
+    try {
+      event.preventDefault();
+
+      const text = this.intputRef.current.value;
+
+      console.log(text);
+
+      const res = await fetch('http://localhost:3000/todo-list', {
+        method: 'POST',
+        body: JSON.stringify({ text, isDone: false }),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+
+      const todoItem = await res.json();
+
+      this.setState(({ todoList }) => ({
+        todoList: [...todoList, todoItem],
+        text: '',
+        filterType: 'all',
+      }));
+    } catch (error) {}
+  };
+
+  completeTodo = async (item) => {
+    try {
+      const res = await fetch(`http://localhost:3000/todo-list/${item.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ ...item, isDone: !item.isDone }),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+      const todoItem = await res.json();
+
+      this.setState(({ todoList }) => {
+        const index = todoList.findIndex((x) => x.id === item.id);
+        return {
+          todoList: [
+            ...todoList.slice(0, index),
+            todoItem,
+            ...todoList.slice(index + 1),
+          ],
+        };
+      });
+    } catch (error) {}
+  };
+
+  render() {
+    const { text, todoList, filterType, error } = this.state;
+
+    console.log('render');
+
+    if (error) {
+      return <h1>Something went wrong. Try after sometime.</h1>;
+    }
+
+    return (
+      <div
+        style={{
+          backgroundColor: 'lightblue',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <h1 style={{ margin: '20px 0' }}>Todo App</h1>
+        <form onSubmit={this.addTodo} style={{ margin: '20px 0' }}>
+          <input type="text" ref={this.intputRef} required />
+          <button type="submit">Add Todo</button>
+        </form>
+        <div style={{ width: '100%', flexGrow: 1, overflowY: 'auto' }}>
+          {todoList.map((item) => (
+            <div
+              key={item.id}
+              style={{ display: 'flex', margin: 10, alignItems: 'center' }}
+            >
+              <input
+                type="checkbox"
+                checked={item.isDone}
+                onChange={() => this.completeTodo(item)}
+              />
+              <span
+                style={{
+                  flexGrow: 1,
+                  textDecoration: item.isDone ? 'line-through' : 'none',
+                }}
+              >
+                {item.text}
+              </span>
+              <button
+                type="button"
+                style={{ minWidth: 80 }}
+                onClick={() => this.deleteTodo(item)}
+              >
+                Delete Todo
+              </button>
+            </div>
+          ))}
+        </div>
+        <div style={{ width: '100%', display: 'flex' }}>
+          <button
+            onClick={() => {
+              this.loadData('all');
+            }}
+            type="button"
+            style={{
+              flexGrow: 1,
+              backgroundColor: filterType == 'all' ? 'lightyellow' : 'white',
+            }}
+          >
+            All
+          </button>
+          <button
+            onClick={() => {
+              this.loadData('pending');
+            }}
+            type="button"
+            style={{
+              flexGrow: 1,
+              backgroundColor:
+                filterType == 'pending' ? 'lightyellow' : 'white',
+            }}
+          >
+            Pending
+          </button>
+          <button
+            onClick={() => {
+              this.loadData('completed');
+            }}
+            type="button"
+            style={{
+              flexGrow: 1,
+              backgroundColor:
+                filterType == 'completed' ? 'lightyellow' : 'white',
+            }}
+          >
+            Completed
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
