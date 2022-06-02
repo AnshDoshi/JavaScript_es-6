@@ -1,6 +1,6 @@
 // reduce most powerful method of javascript
 
-const arr = [1,2,3,4,5,6];
+const arr = [1, 2, 3, 4, 5, 6];
 
 const sum = arr.reduce((previous, current) => previous + current, 0);
 
@@ -14,61 +14,61 @@ console.log(sum);
 // console.log(sum);
 
 const users = [
-    {
-        name: "Yagnesh",
-        age: 30,
-        gender: "male"
-    },
-    {
-        name: "virat",
-        age: 32,
-        gender: "male"
-    },
-    {
-        name: "rohit",
-        age: 29,
-        gender: "male"
-    },
-    {
-        name: 'alia',
-        age: 21,
-        gender: "female"
-    },
-    {
-        name: "deepika",
-        age: 25,
-        gender: "female"
-    },
-    {
-        name: "priyanka",
-        age: 39,
-        gender: "female"
-    },
-    {
-        name: "taimur",
-        age: 08,
-        gender: "male"
-    }
-]
+  {
+    name: "Yagnesh",
+    age: 30,
+    gender: "male",
+  },
+  {
+    name: "virat",
+    age: 32,
+    gender: "male",
+  },
+  {
+    name: "rohit",
+    age: 29,
+    gender: "male",
+  },
+  {
+    name: "alia",
+    age: 21,
+    gender: "female",
+  },
+  {
+    name: "deepika",
+    age: 25,
+    gender: "female",
+  },
+  {
+    name: "priyanka",
+    age: 39,
+    gender: "female",
+  },
+  {
+    name: "taimur",
+    age: 08,
+    gender: "male",
+  },
+];
 
 const obj = {
-    a: 1,
-    b: 2,
-    c: 3
-}
+  a: 1,
+  b: 2,
+  c: 3,
+};
 
-console.log(obj['d']);
+console.log(obj["d"]);
 
-obj['d'] = [];
+obj["d"] = [];
 
-console.log(obj['d']);
+console.log(obj["d"]);
 
 const groupByGender = users.reduce((p, c) => {
-    if(p[c.gender] === undefined) {
-        p[c.gender] = [];
-    }
-    p[c.gender].push(c);
-    return p;
+  if (p[c.gender] === undefined) {
+    p[c.gender] = [];
+  }
+  p[c.gender].push(c);
+  return p;
 }, {});
 
 // {
@@ -86,74 +86,74 @@ console.log(groupByGender);
 // }
 
 const findRohit = users.reduce((p, c) => {
-    if(c.name === "rohit") {
-        return c;
-    }
-    return p;
-}, undefined)
+  if (c.name === "rohit") {
+    return c;
+  }
+  return p;
+}, undefined);
 
 console.log(findRohit);
 
 const findRohitIndex = users.reduce((p, c, i) => {
-    if(c.name === "rohit") {
-        return i;
-    }
-    return p;
+  if (c.name === "rohit") {
+    return i;
+  }
+  return p;
 }, -1);
 
 console.log(findRohitIndex);
 
-const filterMaleRecords = users.reduce((p , c) => {
-    if(c.gender === 'male') {
-        return [...p, c]
-    }
-    return p;
+const filterMaleRecords = users.reduce((p, c) => {
+  if (c.gender === "male") {
+    return [...p, c];
+  }
+  return p;
 }, []);
 
 console.log(filterMaleRecords);
 
 const users = [
-    {
-        name: "Yagnesh",
-        age: 30,
-        gender: "male"
-    },
-    {
-        name: "virat",
-        age: 32,
-        gender: "male"
-    },
-    {
-        name: "rohit",
-        age: 29,
-        gender: "male"
-    },
-    {
-        name: 'alia',
-        age: 21,
-        gender: "female"
-    },
-    {
-        name: "deepika",
-        age: 25,
-        gender: "female"
-    },
-    {
-        name: "priyanka",
-        age: 39,
-        gender: "female"
-    },
-    {
-        name: "taimur",
-        age: 08,
-        gender: "male"
-    },
-    {
-        name: "amitabh",
-        age: 94,
-        gender: "male"
-    }
-]
+  {
+    name: "Yagnesh",
+    age: 30,
+    gender: "male",
+  },
+  {
+    name: "virat",
+    age: 32,
+    gender: "male",
+  },
+  {
+    name: "rohit",
+    age: 29,
+    gender: "male",
+  },
+  {
+    name: "alia",
+    age: 21,
+    gender: "female",
+  },
+  {
+    name: "deepika",
+    age: 25,
+    gender: "female",
+  },
+  {
+    name: "priyanka",
+    age: 39,
+    gender: "female",
+  },
+  {
+    name: "taimur",
+    age: 08,
+    gender: "male",
+  },
+  {
+    name: "amitabh",
+    age: 94,
+    gender: "male",
+  },
+];
 
 // {
 //     "00-09": [],
@@ -164,35 +164,76 @@ const users = [
 // 30-39
 const age = 55;
 
-const ageGroup = Math.floor(age/10);
+const ageGroup = Math.floor(age / 10);
 
-const key = `${ageGroup}0-${ageGroup + 1}9`
+const key = `${ageGroup}0-${ageGroup + 1}9`;
 
 console.log(key);
 
 //  > 30
-//  < 30 > 50 
+//  < 30 > 50
 // > 50
 
 const groupByAge = users.reduce((p, c) => {
-    let key = ''
-    if(c.age <= 30) {
-        key = "<30"
-    }
-    else if(c.age >= 30 && c.age <= 50) {
-        key = ">30<50"
-    } else {
-        key = ">50"
-    }
-    
-    if(p[key] === undefined) {
-        p[key] = [];
-    }
-    p[key].push(c);
-    return p;
-}, {
-});
+  let key = "";
+  if (c.age <= 30) {
+    key = "<30";
+  } else if (c.age >= 30 && c.age <= 50) {
+    key = ">30<50";
+  } else {
+    key = ">50";
+  }
+
+  if (p[key] === undefined) {
+    p[key] = [];
+  }
+  p[key].push(c);
+  return p;
+}, {});
 
 console.log(groupByAge);
 
+const preparr = [
+  {
+    id: 1,
+    time: "<5",
+  },
+  {
+    id: 2,
+    time: "6-10",
+  },
+  {
+    id: 3,
+    time: "10-15",
+  },
+  {
+    id: 4,
+    time: "15-20",
+  },
+  {
+    id: 5,
+    time: "+25",
+  },
+];
+const prepSelected = [false, true, false, false, false];
 
+//   [ { id: 1, time: '<5', selected: false },
+//   { id: 2, time: '6-10', selected: true },
+//   { id: 3, time: '10-15', selected: false },
+//   { id: 4, time: '15-20', selected: false },
+//   { id: 5, time: '+25', selected: false } ]
+
+const data = preparr.reduce(
+  (p, c, i) => [...p, { ...c, selected: prepSelected[i] }],
+  []
+);
+
+console.log(data);
+
+var items = preparr.map((id, index) => {
+  return {
+    ...id,
+    selected: prepSelected[index],
+  };
+});
+console.log(items);
